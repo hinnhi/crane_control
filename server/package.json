@@ -4,7 +4,8 @@
   "description": "server for controlling a crane remotely",
   "main": "index.js",
   "scripts": {
-    "test": "dev"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Crane Controller</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            setInterval(fetchStatus, 500);
+        });
+
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('motor-button')) {
+                const motorButtons = document.querySelectorAll('[name="motors-radio"]');
+                motorButtons.forEach((motorButton) => {
+                    if (motorButton.id === target.getAttribute('for')) {
+                        if(motorButton.checked) {
+                            fetch('http://localhost:3000/setStatus?status=idle');
+                        } else {
+                            fetch('http://localhost:3000/setStatus?status=' + target.dataset.code);
+                        }
+                    } else {
+                        motorButton.checked = false;
+                    }
+                });
+            }
+        });
+
+        function fetchStatus() {
+            const runningMotor = document.getElementById('running-motor');
+            fetch('http://localhost:3000/getStatus')
+                .then((response) => response.text())
+                .then(status => {
+                    if(runningMotor.innerText === 'Connecting...') {
+                        const buttons = document.querySelectorAll('[data-code]');
+                        buttons.forEach((button) => {
+                            const checkbox = document.getElementById(button.getAttribute('for'));
+                            checkbox.disabled = false;
+                        });
+                    }
+                    switch(status) {
+                        case '0':
+                            runningMotor.innerText = 'Resetting';
+                            break;
+                        case '1':
+                            runningMotor.innerText = 'Motor 1 Clockwise spinning';
+                            break;
+                        case '2':
+                            runningMotor.innerText = 'Motor 1 Counterclockwise spinning';
+                            break;
+                        case '3':
+                            runningMotor.innerText = 'Motor 2 Clockwise spinning';
+                            break;
+                        case '4':
+                            runningMotor.innerText = 'Motor 2 Counterclockwise spinning';
+                            break;
+                        case '5':
+                            runningMotor.innerText = 'Motor 3 Clockwise spinning';
+                            break;
+                        case '6':
+                            runningMotor.innerText = 'Motor 3 Counterclockwise spinning';
+                            break;
+                        case 'idle':
+                            runningMotor.innerText = 'Idle';
+                            break;
+                    }
+                    return status;
+                }).then(status => {
+                    const buttons = document.querySelectorAll('[data-code]');
+                    buttons.forEach((button) => {
+                        if(button.dataset.code === status) {
+                            const checkbox = document.getElementById(button.getAttribute('for'));
+                            checkbox.checked = true;
+                        } else {
+                            const checkbox = document.getElementById(button.getAttribute('for'));
+                            checkbox.checked = false;
+                        }
+                    });
+                    return status;
+                }).then(status => {
+                    if(status === '0') {
+                        const motorButtons = document.querySelectorAll('[name="motors-radio"]');
+                        motorButtons.forEach((motorButton) => {
+                            motorButton.disabled = true;
+                        });
+                    } else {
+                        const motorButtons = document.querySelectorAll('[name="motors-radio"]');
+                        motorButtons.forEach((motorButton) => {
+                            motorButton.disabled = false;
+                        });
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+    <div class="container d-flex flex-column gap-3 p-5">
+        <h1 class="text-center">Crane Controller</h1>
+        <div class="row">
+            <div class="col d-grid">
+                <input type="checkbox" class="btn-check" name="motors-radio" id="reset" autocomplete="off" disabled>
+                <label class="btn btn-outline-danger motor-button" for="reset" data-code="0">Reset </label>
+            </div>
+        </div>
+        <div class="row row-cols-2">
+            <div class="col d-grid gap-3">
+                <input type="checkbox" class="btn-check" name="motors-radio" id="motor-one-clockwise" autocomplete="off" disabled>
+                <label class="btn btn-outline-primary motor-button" for="motor-one-clockwise" data-code="1">Motor 1 <i class="bi bi-arrow-clockwise"></i></label>
+                <input type="checkbox" class="btn-check" name="motors-radio" id="motor-two-clockwise" autocomplete="off" disabled>
+                <label class="btn btn-outline-primary motor-button" for="motor-two-clockwise" data-code="3">Motor 2 <i class="bi bi-arrow-clockwise"></i></label>
+                <input type="checkbox" class="btn-check" name="motors-radio" id="motor-three-clockwise" autocomplete="off" disabled>
+                <label class="btn btn-outline-primary motor-button" for="motor-three-clockwise" data-code="5">Motor 3 <i class="bi bi-arrow-clockwise"></i></label>
+            </div>
+            <div class="col d-grid gap-3">
+                <input type="checkbox" class="btn-check" name="motors-radio" id="motor-one-counterclockwise" autocomplete="off" disabled>
+                <label class="btn btn-outline-primary motor-button" for="motor-one-counterclockwise" data-code="2">Motor 1 <i class="bi bi-arrow-counterclockwise"></i></label>
+                <input type="checkbox" class="btn-check" name="motors-radio" id="motor-two-counterclockwise" autocomplete="off" disabled>
+                <label class="btn btn-outline-primary motor-button" for="motor-two-counterclockwise" data-code="4">Motor 2 <i class="bi bi-arrow-counterclockwise"></i></label>
+                <input type="checkbox" class="btn-check" name="motors-radio" id="motor-three-counterclockwise" autocomplete="off" disabled>
+                <label class="btn btn-outline-primary motor-button" for="motor-three-counterclockwise" data-code="6">Motor 3 <i class="bi bi-arrow-counterclockwise"></i></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <span>Status:</span>
+                <span id="running-motor">Connecting...</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
