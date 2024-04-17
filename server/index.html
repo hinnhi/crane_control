@@ -18,9 +18,9 @@
                 motorButtons.forEach((motorButton) => {
                     if (motorButton.id === target.getAttribute('for')) {
                         if(motorButton.checked) {
-                            fetch('http://localhost:3000/setStatus?status=idle');
+                            fetch('https://naoornever.it/crane-controller/setStatus?status=idle');
                         } else {
-                            fetch('http://localhost:3000/setStatus?status=' + target.dataset.code);
+                            fetch('https://naoornever.it/crane-controller/setStatus?status=' + target.dataset.code);
                         }
                     } else {
                         motorButton.checked = false;
@@ -31,7 +31,7 @@
 
         function fetchStatus() {
             const runningMotor = document.getElementById('running-motor');
-            fetch('http://localhost:3000/getStatus')
+            fetch('https://naoornever.it/crane-controller/getStatus')
                 .then((response) => response.text())
                 .then(status => {
                     if(runningMotor.innerText === 'Connecting...') {
