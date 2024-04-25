@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-let status = 'idle';
+let status = '7';
 
 app.get('/', (_, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -14,7 +14,7 @@ app.get('/getStatus', (_, res) => {
 
 app.get('/setStatus', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    if(req.query.status >= 1 || req.query.status <= 7 || req.query.status == 'idle') {
+    if(req.query.status >= 1 || req.query.status <= 7) {
         status = req.query.status;
         res.send('Status updated');
         return;

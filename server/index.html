@@ -42,7 +42,7 @@
                         });
                     }
                     switch(status) {
-                        case '0':
+                        case '7':
                             runningMotor.innerText = 'Resetting';
                             break;
                         case '1':
@@ -81,7 +81,7 @@
                     });
                     return status;
                 }).then(status => {
-                    if(status === '0') {
+                    if(status === '7') {
                         const motorButtons = document.querySelectorAll('[name="motors-radio"]');
                         motorButtons.forEach((motorButton) => {
                             motorButton.disabled = true;
@@ -102,25 +102,25 @@
         <div class="row">
             <div class="col d-grid">
                 <input type="checkbox" class="btn-check" name="motors-radio" id="reset" autocomplete="off" disabled>
-                <label class="btn btn-outline-danger motor-button" for="reset" data-code="0">Reset </label>
+                <label class="btn btn-outline-danger motor-button" for="reset" data-code="7">Reset</label>
             </div>
         </div>
         <div class="row row-cols-2">
             <div class="col d-grid gap-3">
                 <input type="checkbox" class="btn-check" name="motors-radio" id="motor-one-clockwise" autocomplete="off" disabled>
-                <label class="btn btn-outline-primary motor-button" for="motor-one-clockwise" data-code="1">Motor 1 <i class="bi bi-arrow-clockwise"></i></label>
+                <label class="btn btn-outline-primary motor-button" for="motor-one-clockwise" data-code="1">Motor 1<i class="bi bi-arrow-clockwise"></i></label>
                 <input type="checkbox" class="btn-check" name="motors-radio" id="motor-two-clockwise" autocomplete="off" disabled>
-                <label class="btn btn-outline-primary motor-button" for="motor-two-clockwise" data-code="3">Motor 2 <i class="bi bi-arrow-clockwise"></i></label>
+                <label class="btn btn-outline-primary motor-button" for="motor-two-clockwise" data-code="3">Motor 2<i class="bi bi-arrow-clockwise"></i></label>
                 <input type="checkbox" class="btn-check" name="motors-radio" id="motor-three-clockwise" autocomplete="off" disabled>
-                <label class="btn btn-outline-primary motor-button" for="motor-three-clockwise" data-code="5">Motor 3 <i class="bi bi-arrow-clockwise"></i></label>
+                <label class="btn btn-outline-primary motor-button" for="motor-three-clockwise" data-code="5">Motor 3<i class="bi bi-arrow-clockwise"></i></label>
             </div>
             <div class="col d-grid gap-3">
                 <input type="checkbox" class="btn-check" name="motors-radio" id="motor-one-counterclockwise" autocomplete="off" disabled>
-                <label class="btn btn-outline-primary motor-button" for="motor-one-counterclockwise" data-code="2">Motor 1 <i class="bi bi-arrow-counterclockwise"></i></label>
+                <label class="btn btn-outline-primary motor-button" for="motor-one-counterclockwise" data-code="2">Motor 1<i class="bi bi-arrow-counterclockwise"></i></label>
                 <input type="checkbox" class="btn-check" name="motors-radio" id="motor-two-counterclockwise" autocomplete="off" disabled>
-                <label class="btn btn-outline-primary motor-button" for="motor-two-counterclockwise" data-code="4">Motor 2 <i class="bi bi-arrow-counterclockwise"></i></label>
+                <label class="btn btn-outline-primary motor-button" for="motor-two-counterclockwise" data-code="4">Motor 2<i class="bi bi-arrow-counterclockwise"></i></label>
                 <input type="checkbox" class="btn-check" name="motors-radio" id="motor-three-counterclockwise" autocomplete="off" disabled>
-                <label class="btn btn-outline-primary motor-button" for="motor-three-counterclockwise" data-code="6">Motor 3 <i class="bi bi-arrow-counterclockwise"></i></label>
+                <label class="btn btn-outline-primary motor-button" for="motor-three-counterclockwise" data-code="6">Motor 3<i class="bi bi-arrow-counterclockwise"></i></label>
             </div>
         </div>
         <div class="row">
