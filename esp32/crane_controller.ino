@@ -145,8 +145,26 @@ void loop() {
 
 void reset(){
   stopEngines();
-  //reset axes
+  //reset the axis of the base of the crane that allows it to turn on itself (in our case 340 degrees of autonomy)
+  while(digitalRead(LimitSwitch1) != HIGH){
+    digitalWrite(m1AntiClockWise, HIGH);
+  }
+  digitalWrite(m1AntiClockWise, LOW);
+  delay(50);
+  digitalWrite(m1ClockWise, HIGH);
+  delay(1);   //calculate the time to return to the centre
+  digitalWrite(m1ClockWise, LOW);
+  //reset the crane trolley
+  while(digitalRead(LimitSwitch3) != HIGH){
+    digitalWrite(m2AntiClockWise, HIGH);
+  }
+  digitalWrite(m2AntiClockWise, LOW);
+  delay(50);
+  digitalWrite(m2ClockWise, HIGH);
+  delay(1000);   
+  digitalWrite(m2ClockWise, LOW);
   setStatus();
+  delay(50);
 }
 
 void stopEngines(){
