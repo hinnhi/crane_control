@@ -7,8 +7,8 @@
 //5AEI 
 
 //WiFi information
-#define SSID  //""
-#define PASSWORD  //""
+#define SSID  "****"
+#define PASSWORD  "****"
 
 //engines
 #define m1ClockWise 12
@@ -32,7 +32,6 @@ String payload;   //payload of the HTTPS request
 int intpayload = 0;   //payload converted to integer
 int oldpayload = 0;
 
-
 void setup() {
   Serial.begin(115200);
   connectWiFi(SSID, PASSWORD);
@@ -52,7 +51,6 @@ void setup() {
   pinMode(Manual, INPUT);
 }
 
-
 void loop() {
   if (WiFi.status() != WL_CONNECTED){
     Serial.println("Error with WiFi network");
@@ -63,10 +61,10 @@ void loop() {
     if(digitalRead(LimitSwitch1)==HIGH || digitalRead(LimitSwitch2)==HIGH || digitalRead(LimitSwitch3)==HIGH || digitalRead(LimitSwitch4)==HIGH){
       stopEngines();
       setStatus();
-      Serial.println("Physical limit reached, you can no longer turn in this direction");
+      Serial.println("Physical limit reached, you can no longer turn in this direction!");
     }
     HTTPClient http;
-    http.begin("https://naoornever.it/crane-controller/getStatus");
+    http.begin("****");
     int httpCode = http.GET();
     if (httpCode > 0){
       payload = http.getString();
@@ -138,24 +136,18 @@ void loop() {
   }
   while (WiFi.status() == WL_CONNECTED && digitalRead(Automatic)==HIGH){
     Serial.println("Automatic mode activated");
-    automaticMode();
+    reset();
+    //calculate the times for automatic operation
+    setStatus();
     delay(100);
   }
 }
 
-
 void reset(){
   stopEngines();
-  //devo ancora calcolare i tempi del funzionamento e testare i fine corsa
-}
-
-
-void automaticMode(){
-  reset();
-  //devo ancora colcolare i tempi del funzionamento in automatico
+  //reset axes
   setStatus();
 }
-
 
 void stopEngines(){
   digitalWrite(m1ClockWise, LOW);
@@ -164,9 +156,7 @@ void stopEngines(){
   digitalWrite(m2AntiClockWise, LOW);
   digitalWrite(m3ClockWise, LOW);
   digitalWrite(m3AntiClockWise, LOW);
-  delay(50);
 }
-
 
 void connectWiFi(const char* ssid, const char* password){
   WiFi.disconnect();
@@ -182,11 +172,10 @@ void connectWiFi(const char* ssid, const char* password){
   Serial.println(WiFi.localIP());
 }
 
-
 void setStatus(){
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin("https://naoornever.it/crane-controller/setStatus?status=idle");
+    http.begin("****");
     int httpCode = http.GET();
     if (httpCode > 0){
       String payload = http.getString();
