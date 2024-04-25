@@ -57,8 +57,8 @@ void loop() {
     stopEngines();
     connectWiFi(SSID, PASSWORD);
   }
-  while (WiFi.status() == WL_CONNECTED && digitalRead(Manual)==HIGH){
-    if(digitalRead(LimitSwitch1)==HIGH || digitalRead(LimitSwitch2)==HIGH || digitalRead(LimitSwitch3)==HIGH || digitalRead(LimitSwitch4)==HIGH){
+  while (WiFi.status() == WL_CONNECTED && digitalRead(Manual) == HIGH){
+    if(digitalRead(LimitSwitch1) == HIGH || digitalRead(LimitSwitch2) == HIGH || digitalRead(LimitSwitch3) == HIGH || digitalRead(LimitSwitch4) == HIGH){
       stopEngines();
       setStatus();
       Serial.println("Physical limit reached, you can no longer turn in this direction!");
@@ -134,37 +134,30 @@ void loop() {
         break;
     }
   }
-  while (WiFi.status() == WL_CONNECTED && digitalRead(Automatic)==HIGH){
+  while (WiFi.status() == WL_CONNECTED && digitalRead(Automatic) == HIGH){
     Serial.println("Automatic mode activated");
-    reset();
-    //calculate the times for automatic operation
+    stopEngines();
+    //reset the axis of the base of the crane that allows it to turn on itself (in our case 340 degrees of autonomy)
+    while(digitalRead(LimitSwitch1) != HIGH){
+      digitalWrite(m1AntiClockWise, HIGH);
+    }
+    digitalWrite(m1AntiClockWise, LOW);
+    delay(50);
+    digitalWrite(m1ClockWise, HIGH);
+    delay(1);   //calculate the time to return to the centre
+    digitalWrite(m1ClockWise, LOW);
+    //reset the crane trolley
+    while(digitalRead(LimitSwitch3) != HIGH){
+      digitalWrite(m2AntiClockWise, HIGH);
+    }
+    digitalWrite(m2AntiClockWise, LOW);
+    delay(50);
+    digitalWrite(m2ClockWise, HIGH);
+    delay(1000);   
+    digitalWrite(m2ClockWise, LOW);
     setStatus();
-    delay(100);
-  }
-}
-
-void reset(){
-  stopEngines();
-  //reset the axis of the base of the crane that allows it to turn on itself (in our case 340 degrees of autonomy)
-  while(digitalRead(LimitSwitch1) != HIGH){
-    digitalWrite(m1AntiClockWise, HIGH);
-  }
-  digitalWrite(m1AntiClockWise, LOW);
-  delay(50);
-  digitalWrite(m1ClockWise, HIGH);
-  delay(1);   //calculate the time to return to the centre
-  digitalWrite(m1ClockWise, LOW);
-  //reset the crane trolley
-  while(digitalRead(LimitSwitch3) != HIGH){
-    digitalWrite(m2AntiClockWise, HIGH);
-  }
-  digitalWrite(m2AntiClockWise, LOW);
-  delay(50);
-  digitalWrite(m2ClockWise, HIGH);
-  delay(1000);   
-  digitalWrite(m2ClockWise, LOW);
-  setStatus();
-  delay(50);
+    delay(50);
+    }
 }
 
 void stopEngines(){
