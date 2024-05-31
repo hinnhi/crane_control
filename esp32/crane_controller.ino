@@ -89,7 +89,7 @@ void loop() {
           stopEngines();
         }
         digitalWrite(m1CounterClockWise, HIGH);
-        Serial.println(" --> engine 1 anti-clockwise spinnng");
+        Serial.println(" --> engine 1 counter clockwise spinnng");
         oldpayload = intpayload;
         break;
       case 3:
@@ -105,7 +105,7 @@ void loop() {
           stopEngines();
         }
         digitalWrite(m2CounterClockWise, HIGH);
-        Serial.println(" --> engine 2 anti-clockwise spinnng");
+        Serial.println(" --> engine 2 counter clockwise spinnng");
         oldpayload = intpayload;
         break;
       case 5:
@@ -121,7 +121,7 @@ void loop() {
           stopEngines();
         }
         digitalWrite(m3CounterClockWise, HIGH);
-        Serial.println(" --> engine 3 anti-clockwise spinnng");
+        Serial.println(" --> engine 3 counter clockwise spinnng");
         oldpayload = intpayload;
         break;
       case 7:
